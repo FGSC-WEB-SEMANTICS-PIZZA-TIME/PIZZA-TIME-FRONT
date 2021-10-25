@@ -23,8 +23,8 @@
             <div class="col-md-2" *ngFor="let dropdown of dropdowns">
               <div class="form-group">
                 <label class="small">{{dropdown.propertyName}}</label>
-                <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)">
-                  <option *ngFor="let text of dropdown.data">{{text}}</option>
+                <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)"  *ngFor="let text of dropdown.data">
+                  <option>{{text}}</option>
                 </select>
               </div>
             </div>
@@ -40,8 +40,8 @@
         <div class="offer-menu2-items">
           <carousel [cellsToShow]="2">
             <div class="carousel-cell" *ngFor="let pizza of pizzas">
-              <img src="https://static.toiimg.com/thumb/56933159.cms?imgsize=686279&width=800&height=800" alt="">
-              {{pizza}}
+              <img [src]="pizza.imageUrl" alt="">
+              {{pizza.name}}
             </div>
           </carousel>
         </div>

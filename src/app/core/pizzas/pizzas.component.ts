@@ -6,6 +6,8 @@ import {finalize, map} from "rxjs/operators";
 import {ChangeContext, Options} from "@angular-slider/ngx-slider";
 import {PizzaSlider} from "../../shared/_models/pizza-slider.model";
 import {PizzaDropdown} from "../../shared/_models/pizza-dropdown.model";
+import {Pizza} from "../../shared/_models/pizza.model";
+import {ImageFetcherService} from "../../shared/_services/image-fetcher.service";
 
 @Component({
   selector: 'app-pizzas',
@@ -15,10 +17,10 @@ import {PizzaDropdown} from "../../shared/_models/pizza-dropdown.model";
 export class PizzasComponent implements OnInit {
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   filter = new PaginationHelper();
-  pizzas: string[] = [];
+  pizzas: Pizza[] = [];
   dropdowns: PizzaDropdown[] = [];
   sliders: PizzaSlider[] = [];
-  constructor(private service: OwlService) {}
+  constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {}
 
   ngOnInit(): void {
     this.service.classProperties('Pizza').pipe(
@@ -34,7 +36,7 @@ export class PizzasComponent implements OnInit {
                   let max = 500;
                   this.sliders.push(new PizzaSlider(val.propertyName, min, max))
                 } else {
-                  this.dropdowns.push(new PizzaDropdown(val.propertyName, values.get(val.propertyName)));
+                  // this.dropdowns.push(new PizzaDropdown(val.propertyName, values.get(val.propertyName)));
                 }
               })
             )
@@ -50,8 +52,20 @@ export class PizzasComponent implements OnInit {
   doFilter() {
     this.loading$.next(true);
     this.service.query(this.filter)
-      .pipe(finalize(() => this.loading$.next(false)))
-      .subscribe(paginatedPizzas => this.pizzas = paginatedPizzas);
+      .pipe(
+        map(pizzaNames => {
+          for (const pizzaName of pizzaNames){
+            this.imagesFetcher.fetchImage(pizzaName).subscribe(response => {
+              console.log(response.hits);
+              this.pizzas.push(new Pizza(pizzaName, response.hits[0].largeImageURL));
+            }, () => {
+              // TODO : REPLACE WITH A GENERIC PIZZA IMAGE
+            });
+          }
+        }),
+        finalize(() => this.loading$.next(false))
+      )
+      .subscribe();
   }
 
   sliderFilter($event: ChangeContext) {

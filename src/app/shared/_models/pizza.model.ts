@@ -1,5 +1,6 @@
-export interface Pizza{
-
+export class Pizza{
+  constructor(public name: string, public imageUrl: string) {
+  }
 }
 
 //    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/firas/ontologies/2021/9/pizza-ontology#Mexican_Pizza">
