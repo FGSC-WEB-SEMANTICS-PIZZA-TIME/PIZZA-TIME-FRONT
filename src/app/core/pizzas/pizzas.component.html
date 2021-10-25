@@ -20,46 +20,31 @@
       <div class="container">
         <form>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2" *ngFor="let dropdown of dropdowns">
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Topping</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Anchovy</option>
-                  <option>Basil</option>
-                  <option>Black_Olives</option>
-                  <option>Blueberries</option>
-                  <option>Garlic</option>
-                  <option>Ground_Beef</option>
+                <label class="small">{{dropdown.propertyName}}</label>
+                <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)">
+                  <option *ngFor="let text of dropdown.data">{{text}}</option>
                 </select>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">Sauce</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Tomato</option>
-                  <option>Nutella_Sauce</option>
-                </select>
+            <div class="col-md-2">
+              <div class="form-group pizza-slider" *ngFor="let slider of sliders">
+                <ngx-slider [(value)]="slider.min" [(highValue)]="slider.max" (userChangeEnd)="sliderFilter($event)"  [options]="options"></ngx-slider>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">Crust</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Cheese_Edge</option>
-                  <option>Regular_Thin_Crust</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group"></div>
-            </div>
-            <button type="submit">Save</button>
           </div>
         </form>
       </div>
       <div class="offer-menu2-wrapper">
-        <div class="offer-menu2-items"></div>
+        <div class="offer-menu2-items">
+          <carousel [cellsToShow]="2">
+            <div class="carousel-cell" *ngFor="let pizza of pizzas">
+              <img src="https://static.toiimg.com/thumb/56933159.cms?imgsize=686279&width=800&height=800" alt="">
+              {{pizza}}
+            </div>
+          </carousel>
+        </div>
       </div>
       <div class="clear"></div>
     </div>

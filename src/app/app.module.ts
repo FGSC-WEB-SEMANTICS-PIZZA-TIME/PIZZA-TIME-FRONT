@@ -8,11 +8,14 @@ import { AboutUsComponent } from './core/about-us/about-us.component';
 import { ContactComponent } from './core/contact/contact.component';
 import { BlogComponent } from './core/blog/blog.component';
 import { PizzasModule } from './core/pizzas/pizzas.module';
+import {OwlService} from "./shared/_services/owl.service";
+import {HttpClientModule} from "@angular/common/http";
+import {IvyCarouselModule} from "angular-responsive-carousel";
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, AboutUsComponent, ContactComponent, BlogComponent],
-  imports: [BrowserModule, AppRoutingModule , PizzasModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule , PizzasModule, HttpClientModule, IvyCarouselModule],
+  providers: [OwlService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,3 @@
+.pizza-slider ngx-slider ngx-slider-tooltip-wrapper .ngx-slider-selection {
+  background: red !important;
+}
