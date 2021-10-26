@@ -20,12 +20,12 @@
       <div class="container">
         <form>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-2">
               <div class="form-group">
                 <input [formControl]="search" placeholder="Search for your favorite pizza">
               </div>
             </div>
-            <div class="col-md-2" *ngFor="let dropdown of dropdowns">
+            <div class="col-2" *ngFor="let dropdown of dropdowns">
               <div class="form-group">
                 <label class="small">{{dropdown.propertyName}}</label>
                 <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)" >
@@ -33,8 +33,8 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-2">
-              <div class="form-group pizza-slider" *ngFor="let slider of sliders">
+            <div class="col-2"  *ngFor="let slider of sliders">
+              <div class="form-group pizza-slider">
                 <ngx-slider [(value)]="slider.min" [(highValue)]="slider.max" (userChangeEnd)="sliderFilter($event)"  [options]="options"></ngx-slider>
               </div>
             </div>
