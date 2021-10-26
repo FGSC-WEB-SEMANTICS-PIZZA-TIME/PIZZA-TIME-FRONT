@@ -19,7 +19,7 @@ export class OwlService {
   }
   // http://localhost:8080/generic?key=hasCrust&type=ObjectProperty
   propertyValues(propertyName: string, propertyType: string){
-    return this.http.get<Map<string, string[]>>(`${environment.gateway}generic?key=${propertyName}&type=${propertyType}`)
+    return this.http.get<string[]>(`${environment.gateway}generic?key=${propertyName}&type=${propertyType}`)
   }
   propertySubClasses(propertyName: string){
     return this.http.get(`${environment.gateway}subclasses?type=${propertyName}`);
