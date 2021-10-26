@@ -1,23 +1,41 @@
 <div class="square-flip" *ngIf="pizza">
-  <div class='square'>
+  <div class="square">
     <div class="square-container">
-      <div class="align-center"><img [src]="frontCoverImage" class="boxshadow" alt="">
+      <div class="align-center">
+        <img [src]="frontCoverImage" class="boxshadow" alt="" />
       </div>
-      <h2 class="textshadow">{{pizza.name}}</h2>
+      <h2 class="textshadow">{{ pizza.name }}</h2>
       <h3 class="textshadow">-- Order now</h3>
     </div>
     <div class="flip-overlay"></div>
   </div>
-  <div class='square2'>
+  <div class="square2">
     <div class="square-container2">
       <div class="align-center">
-        <img [src]="backCoverImage" height="40%">
+        <img [src]="backCoverImage" height="40%" />
       </div>
-      <h2>#1 {{pizza.name}}</h2>
+      <h2>#1 {{ pizza.name }}</h2>
     </div>
     <div class="flip-overlay"></div>
   </div>
 </div>
 
-
-
+<!-- <div class="offer-menu2-item-single">
+  <img class="offer-menu2-frame" src="assets/images/frame.png" />
+  <div class="offer-menu2-shadow"></div>
+  <div class="offer-menu2-thumb">
+    <img class="offer-menu2-inner-frame" src="assets/images/inner-shadow.png" />
+  </div>
+  <div class="offer-menu2-thumb-image">
+    <img [src]="frontCoverImage" width="313" height="220" alt="hawaii" />
+  </div>
+  <div class="clear"></div>
+  <span class="offer-menu2-icon flaticon-pizza-slice"></span>
+  <div class="offer-menu2-details">
+    <div class="single-offer-menu2-title">{{ pizza.name }}</div>
+    <div class="single-offer-menu2-content">
+      <p>Pineapple, mushrooms, black olives, tomato sauce</p>
+    </div>
+    <div class="single-offer-menu2-price">$5.50</div>
+  </div>
+</div> -->

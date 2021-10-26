@@ -28,3 +28,4 @@ export interface Hit {
   user:            string;
   userImageURL:    string;
 }
+

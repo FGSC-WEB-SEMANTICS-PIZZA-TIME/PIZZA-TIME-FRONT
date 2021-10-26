@@ -20,8 +20,13 @@ export class PizzaCardComponent implements OnInit, OnChanges {
     this.pizza = changes.pizza.currentValue;
   }
   randomizeImages(){
-    this.frontCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
-    this.backCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
+    if (this.pizza.imageHits.length !== 0 ){
+      this.frontCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
+      this.backCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
+    } else {
+      this.frontCoverImage = "assets/images/pizza.webp";
+      this.backCoverImage = "assets/images/pizza2.webp";
+    }
   }
   randomIntFromInterval(max: number) {
     return Math.floor(Math.random() * (max));

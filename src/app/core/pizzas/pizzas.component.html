@@ -20,21 +20,38 @@
       <div class="container">
         <form>
           <div class="row">
-            <div class="col-2">
-              <div class="form-group">
+            <div class="col-md-12">
+              <!-- <div class="form-group">
                 <label>Search:</label>
                 <input [(ngModel)]="filter.search" name="search">
+              </div> -->
+              <div class="form__group field mb-4">
+                <input
+                  type="input"
+                  class="form__field"
+                  placeholder="Search"
+                  [(ngModel)]="filter.search"
+                  name="search"
+                  id="name"
+                  required
+                />
+
+                <label for="name" class="form__label">Pizza</label>
+              </div>
+              <div class="float-right">
+                <button (click)="resetFilter(); isReset = !isReset" *ngIf="!isReset">Reset</button>
+                <button (click)="fetchAndFilter(); isReset = !isReset" *ngIf="isReset">Search</button>
               </div>
             </div>
-            <div class="col-2" *ngFor="let dropdown of dropdowns; index as i">
+            <div class="col-md-3" *ngFor="let dropdown of filter.dropdownValues; index as i">
               <div class="form-group">
                 <label class="small">{{dropdown.propertyName}}</label>
-                <select class="form-control" >
-                  <option *ngFor="let text of dropdown.data" [value]="text" [ngValue]="text">{{text}}</option>
+                <select class="form-control" [(ngModel)]="dropdown.selected" (ngModelChange)="doFilter()" [name]="dropdown.propertyName">
+                  <option *ngFor="let text of dropdown.data" [value]="text" [ngValue]="text">{{text.replace('_',' ') | titlecase}}</option>
                 </select>
               </div>
             </div>
-            <div class="col-2"  *ngFor="let slider of sliders">
+            <div class="col-md-6"  *ngFor="let slider of filter.sliderValues;">
               <div class="form-group pizza-slider">
                 <label>{{slider.propertyName}}</label>
                 <ngx-slider [(value)]="slider.min" [(highValue)]="slider.max" (userChangeEnd)="doFilter()"  [options]="slider.options"></ngx-slider>
@@ -45,7 +62,7 @@
       </div>
       <div class="offer-menu2-wrapper">
         <div class="offer-menu2-items">
-          <carousel [cellsToShow]="3" [height]="370">
+          <carousel [cellsToShow]="2" [height]="370">
             <ng-container *ngFor="let pizza of pizzas">
               <div class="carousel-cell" *ngIf="pizza.name.startsWith(filter.search.toLowerCase())">
                 <app-pizza-card [pizza]="pizza"></app-pizza-card>

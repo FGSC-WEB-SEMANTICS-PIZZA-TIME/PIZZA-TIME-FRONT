@@ -17,11 +17,48 @@ export class PizzasComponent implements OnInit {
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   filter = new PaginationHelper();
   pizzas: Pizza[] = [];
-  dropdowns: PizzaDropdown[] = [];
-  sliders: PizzaSlider[] = [];
-  constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {}
+  isReset = false;
+  constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {
+  }
 
   ngOnInit(): void {
+    this.fetchAndFilter();
+  }
+
+
+  doFilter() {
+    console.log(this.filter)
+    this.loading$.next(true);
+    this.service.query(this.filter)
+      .pipe(
+        map(pizzaNames => {
+          const newPizza: Pizza[] = [];
+          for (let pizzaName of pizzaNames) {
+            pizzaName = pizzaName.toLowerCase().replace('_', ' ');
+            this.imagesFetcher.fetchImage(pizzaName).subscribe(response => {
+              newPizza.push(new Pizza(pizzaName, response.hits));
+            });
+          }
+          this.pizzas = newPizza;
+        }),
+        finalize(() => this.loading$.next(false))
+      ).subscribe(() => console.warn('DONE'));
+  }
+  resetFilter(){
+    this.filter = new PaginationHelper();
+    this.doFilter();
+  }
+
+  fetchAndFilter() {
+    this.service.propertySubClasses('Pizza').pipe(
+      map(subclasses => {
+        //this.dropdowns.push();
+        this.filter.dropdownValues.push(new PizzaDropdown('Type', subclasses));
+      }),
+      finalize(() => {
+        this.loading$.next(false);
+      })
+    ).subscribe();
     this.service.classProperties('Pizza').pipe(
       map(value => {
         for (const val of value) {
@@ -31,52 +68,16 @@ export class PizzasComponent implements OnInit {
                 if (val.propertyType === 'DatatypeProperty') {
                   let min = 0;
                   let max = 500;
-                  this.sliders.push(new PizzaSlider(val.propertyName, min, max, {floor: min, ceil: max}));
-                  this.filter.sliderValues.set(val.propertyName,[min=  min, max= max]);
+                  this.filter.sliderValues.push(new PizzaSlider(val.propertyName, min, max, {floor: min, ceil: max}));
                 } else {
-                  this.dropdowns.push(new PizzaDropdown(val.propertyName, propertyValues));
-                  this.filter.dropdownValues.set(val.propertyName, propertyValues[0]);
+                  this.filter.dropdownValues.push(new PizzaDropdown(val.propertyName, propertyValues));
                 }
-              })
+              }),
             )
             .subscribe();
         }
       }),
-      finalize(() => {
-        this.loading$.next(false);
-        console.log(this.filter);
-      })
     ).subscribe();
-    this.doFilter();
-  }
-
-
-  doFilter() {
-    this.loading$.next(true);
-    for(const dropdown of this.dropdowns){
-      this.filter.dropdownValues.set(dropdown.propertyName, dropdown.data[1]);
-      console.log(this.filter)
-    }
-    this.service.query(this.filter)
-      .pipe(
-        map(pizzaNames => {
-          for (let pizzaName of pizzaNames){
-            pizzaName = pizzaName.toLowerCase().replace('_',' ');
-            this.imagesFetcher.fetchImage(pizzaName).subscribe(response => {
-              this.pizzas.push(new Pizza(pizzaName, response.hits));
-            }, () => {
-              // TODO : REPLACE WITH A GENERIC PIZZA IMAGE
-            });
-          }
-        }),
-        finalize(() => this.loading$.next(false))
-      ).subscribe();
-  }
-
-  dropdownFilter(propertyName: string, text: string) {
-    console.log('ok')
-    this.filter.dropdownValues.set(propertyName, text);
-    console.log(this.filter.dropdownValues.get(propertyName))
     this.doFilter();
   }
 }

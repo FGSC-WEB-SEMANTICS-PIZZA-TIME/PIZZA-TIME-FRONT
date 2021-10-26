@@ -11,9 +11,7 @@ import {PropertyData} from "../_models/property-data.model";
 export class OwlService {
   constructor(private http: HttpClient) { }
   // TODO : STRIP URI PREFIX
-  /*
-  * 1
-   */
+
   classProperties(className: string){
     return this.http.get<PropertyData[]>(`${environment.gateway}generic/properties?className=${className}`);
   }
@@ -22,7 +20,7 @@ export class OwlService {
     return this.http.get<string[]>(`${environment.gateway}generic?key=${propertyName}&type=${propertyType}`)
   }
   propertySubClasses(propertyName: string){
-    return this.http.get(`${environment.gateway}subclasses?type=${propertyName}`);
+    return this.http.get<string[]>(`${environment.gateway}subclasses?type=${propertyName}`);
   }
   query(filter: PaginationHelper){
     return this.http.post<string[]>(`${environment.gateway}pizzas/query`,filter);
