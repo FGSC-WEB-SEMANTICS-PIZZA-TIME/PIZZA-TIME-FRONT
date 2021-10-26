@@ -13,18 +13,17 @@ export class PizzaCardComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-    this.randomizeImages()
+    this.randomizeImages();
+    setInterval(() => this.randomizeImages(), 8000);
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.pizza = changes.pizza.currentValue;
   }
   randomizeImages(){
-    setInterval(() => {
-      this.frontCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].imageURL;
-      this.backCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].imageURL;
-    }, 8000);
+    this.frontCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
+    this.backCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].webformatURL;
   }
   randomIntFromInterval(max: number) {
-    return Math.floor(Math.random() * (max))
+    return Math.floor(Math.random() * (max));
   }
 }
