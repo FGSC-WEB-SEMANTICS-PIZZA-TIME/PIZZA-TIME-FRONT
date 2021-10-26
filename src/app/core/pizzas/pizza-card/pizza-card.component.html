@@ -1,19 +1,19 @@
-<div class="square-flip">
-  <div class='square'
-       [ngStyle]="{backgroundImage: pizza.imageHits[random]}">
+<div class="square-flip" *ngIf="pizza">
+  <div class='square'>
     <div class="square-container">
-      <div class="align-center"><img [src]="pizza.imageHits[random]" class="boxshadow" alt="">
+      <div class="align-center"><img [src]="frontCoverImage" class="boxshadow" alt="">
       </div>
-      <h2 class="textshadow">{{pizza.name.replace('_', ' ')}}</h2>
+      <h2 class="textshadow">{{pizza.name}}</h2>
       <h3 class="textshadow">-- Order now</h3>
     </div>
     <div class="flip-overlay"></div>
   </div>
-  <div class='square2'
-       [ngStyle]="{backgroundImage: pizza.imageHits[random !== 0 ? random - 1: random + 1]}">
+  <div class='square2'>
     <div class="square-container2">
-      <div class="align-center"></div>
-      <h2>#1 {{pizza.name.replace('_', ' ')}}</h2>
+      <div class="align-center">
+        <img [src]="backCoverImage">
+      </div>
+      <h2>#1 {{pizza.name}}</h2>
     </div>
     <div class="flip-overlay"></div>
   </div>

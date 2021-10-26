@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Pizza} from "../../../shared/_models/pizza.model";
 
 @Component({
@@ -6,17 +6,25 @@ import {Pizza} from "../../../shared/_models/pizza.model";
   templateUrl: './pizza-card.component.html',
   styleUrls: ['./pizza-card.component.css']
 })
-export class PizzaCardComponent implements OnInit {
-  // @ts-ignore
-  @Input() pizza: Pizza;
-  random: number = 0;
+export class PizzaCardComponent implements OnInit, OnChanges {
+  @Input() pizza!: Pizza;
+  frontCoverImage: string = '';
+  backCoverImage: string = '';
   constructor() { }
 
   ngOnInit(): void {
-    setInterval(() => this.random = this.randomIntFromInterval(this.pizza.imageHits.length), 8000)
+    this.randomizeImages()
   }
-
-  randomIntFromInterval(max: number) { // min and max included
-    return Math.floor(Math.random() * (max + 1))
+  ngOnChanges(changes: SimpleChanges): void {
+    this.pizza = changes.pizza.currentValue;
+  }
+  randomizeImages(){
+    setInterval(() => {
+      this.frontCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].imageURL;
+      this.backCoverImage = this.pizza.imageHits[this.randomIntFromInterval(this.pizza.imageHits.length)].imageURL;
+    }, 8000);
+  }
+  randomIntFromInterval(max: number) {
+    return Math.floor(Math.random() * (max))
   }
 }

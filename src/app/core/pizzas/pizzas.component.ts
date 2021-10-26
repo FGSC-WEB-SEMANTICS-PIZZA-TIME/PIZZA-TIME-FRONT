@@ -36,8 +36,7 @@ export class PizzasComponent implements OnInit {
                   let max = 500;
                   this.sliders.push(new PizzaSlider(val.propertyName, min, max))
                 } else {
-                  console.log(propertyValues)
-                    this.dropdowns.push(new PizzaDropdown(val.propertyName, ['TEST', 'TESTt','TES']));
+                  this.dropdowns.push(new PizzaDropdown(val.propertyName, ['TEST', 'TESTt','TES']));
                 }
               })
             )
