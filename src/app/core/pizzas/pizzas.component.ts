@@ -18,14 +18,10 @@ export class PizzasComponent implements OnInit {
   filter = new PaginationHelper();
   pizzas: Pizza[] = [];
   isReset = false;
-  constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {
-  }
-
+  constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {}
   ngOnInit(): void {
     this.fetchAndFilter();
   }
-
-
   doFilter() {
     console.log(this.filter)
     this.loading$.next(true);
