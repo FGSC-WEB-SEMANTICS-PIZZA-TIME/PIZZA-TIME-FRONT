@@ -1,5 +1,7 @@
+import {Hit} from "./fetched-images.model";
+
 export class Pizza{
-  constructor(public name: string, public imageUrl: string) {
+  constructor(public name: string, public imageHits: Hit[]) {
   }
 }
 

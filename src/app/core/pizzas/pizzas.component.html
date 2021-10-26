@@ -20,11 +20,16 @@
       <div class="container">
         <form>
           <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <input [formControl]="search" placeholder="Search for your favorite pizza">
+              </div>
+            </div>
             <div class="col-md-2" *ngFor="let dropdown of dropdowns">
               <div class="form-group">
                 <label class="small">{{dropdown.propertyName}}</label>
-                <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)"  *ngFor="let text of dropdown.data">
-                  <option>{{text}}</option>
+                <select class="form-control" (change)="dropdownFilter($event,dropdown.propertyName)" >
+                  <option *ngFor="let text of dropdown.data">{{text}}</option>
                 </select>
               </div>
             </div>
@@ -39,10 +44,11 @@
       <div class="offer-menu2-wrapper">
         <div class="offer-menu2-items">
           <carousel [cellsToShow]="2">
-            <div class="carousel-cell" *ngFor="let pizza of pizzas">
-              <img [src]="pizza.imageUrl" alt="">
-              {{pizza.name}}
-            </div>
+            <ng-container *ngFor="let pizza of pizzas">
+              <div class="carousel-cell" *ngIf="pizza.name.startsWith(search.value.toLowerCase())">
+                <app-pizza-card [pizza]="pizza"></app-pizza-card>
+              </div>
+            </ng-container>
           </carousel>
         </div>
       </div>

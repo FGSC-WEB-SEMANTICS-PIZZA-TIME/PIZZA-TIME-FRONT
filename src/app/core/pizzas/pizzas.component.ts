@@ -8,6 +8,7 @@ import {PizzaSlider} from "../../shared/_models/pizza-slider.model";
 import {PizzaDropdown} from "../../shared/_models/pizza-dropdown.model";
 import {Pizza} from "../../shared/_models/pizza.model";
 import {ImageFetcherService} from "../../shared/_services/image-fetcher.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-pizzas',
@@ -20,23 +21,23 @@ export class PizzasComponent implements OnInit {
   pizzas: Pizza[] = [];
   dropdowns: PizzaDropdown[] = [];
   sliders: PizzaSlider[] = [];
+  search = new FormControl('');
   constructor(private service: OwlService, private imagesFetcher: ImageFetcherService) {}
 
   ngOnInit(): void {
     this.service.classProperties('Pizza').pipe(
       map(value => {
         for (const val of value) {
-          // TODO : GET VALUES
           this.service.propertyValues(val.propertyName, val.propertyType)
             .pipe(
-              map(values => {
+              map(propertyValues => {
                 if (val.propertyType === 'DatatypeProperty') {
-                  // TODO : FIND MIN AND MAX THEN INSTNACIATE
                   let min = 0;
                   let max = 500;
                   this.sliders.push(new PizzaSlider(val.propertyName, min, max))
                 } else {
-                  // this.dropdowns.push(new PizzaDropdown(val.propertyName, values.get(val.propertyName)));
+                  console.log(propertyValues)
+                    this.dropdowns.push(new PizzaDropdown(val.propertyName, ['TEST', 'TESTt','TES']));
                 }
               })
             )
@@ -54,18 +55,17 @@ export class PizzasComponent implements OnInit {
     this.service.query(this.filter)
       .pipe(
         map(pizzaNames => {
-          for (const pizzaName of pizzaNames){
+          for (let pizzaName of pizzaNames){
+            pizzaName = pizzaName.toLowerCase().replace('_',' ');
             this.imagesFetcher.fetchImage(pizzaName).subscribe(response => {
-              console.log(response.hits);
-              this.pizzas.push(new Pizza(pizzaName, response.hits[0].largeImageURL));
+              this.pizzas.push(new Pizza(pizzaName, response.hits));
             }, () => {
               // TODO : REPLACE WITH A GENERIC PIZZA IMAGE
             });
           }
         }),
         finalize(() => this.loading$.next(false))
-      )
-      .subscribe();
+      ).subscribe();
   }
 
   sliderFilter($event: ChangeContext) {
@@ -80,4 +80,5 @@ export class PizzasComponent implements OnInit {
     floor: 0,
     ceil: 100,
   };
+
 }

@@ -6,6 +6,7 @@ import { ContactComponent } from './core/contact/contact.component';
 import { DashboardComponent } from './core/dashboard/dashboard.component';
 import { MenuComponent } from './core/menu/menu.component';
 import { PizzasComponent } from './core/pizzas/pizzas.component';
+import {PizzaCardComponent} from "./core/pizzas/pizza-card/pizza-card.component";
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
