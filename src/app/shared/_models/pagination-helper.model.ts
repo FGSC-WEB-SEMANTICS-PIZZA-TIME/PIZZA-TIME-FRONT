@@ -1,12 +1,7 @@
 export class PaginationHelper{
-  crust       = '';
-  topping     = '';
-  sauce       = '';
-  type        = '';
-  minCalories = 0;
-  maxCalories = 5000;
-  minPrice    = 0;
-  maxPrice    = 5000;
+  search: string = '';
+  dropdownValues: Map<string,string> = new Map<string, string>();
+  sliderValues: Map<string,[min: number, max: number]> = new Map<string, [min: number, max: number]>();
   limit       = 10;
   offset      = 0;
 }
